@@ -15,6 +15,7 @@ const UserStatisticsView = (props: Props) => {
   const tagStore = useTagStore();
   const memoStore = useMemoStore();
   const [memoAmount, setMemoAmount] = useState(0);
+  const [statsLength, setStatsLength] = useState(0);
   const [isRequesting, setIsRequesting] = useState(false);
   const days = Math.ceil((Date.now() - user.createTime!.getTime()) / 86400000);
   const memos = Object.values(memoStore.getState().memoMapByName);
@@ -33,6 +34,7 @@ const UserStatisticsView = (props: Props) => {
       });
       setIsRequesting(false);
       setMemoAmount(Object.values(stats).reduce((acc, cur) => acc + cur, 0));
+      setStatsLength(Object.values(stats).length);
     })();
   }, [memos.length, user.name]);
 
@@ -47,6 +49,13 @@ const UserStatisticsView = (props: Props) => {
           <span className="block text-base sm:text-sm">{t("common.days")}</span>
         </div>
         <span className="font-mono">{days}</span>
+      </div>
+      <div className="w-full flex justify-between items-center">
+        <div className="w-full flex justify-start items-center">
+          <Icon.CalendarCheck className="w-4 h-auto mr-1" />
+          <span className="block text-base sm:text-sm">Active</span>
+        </div>
+        <span className="font-mono">{statsLength}</span>
       </div>
       <div className="w-full flex justify-between items-center">
         <div className="w-full flex justify-start items-center">
